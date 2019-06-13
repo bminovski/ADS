@@ -1,0 +1,53 @@
+/*
+ * Copyright (C) 2013-2014 Bas Laarhoven
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * version 1.1 - 2014-03-23 cleanup for release
+ */
+/dts-v1/;
+/plugin/;
+
+/ {
+    compatible = "aes,bebopr", "ti,beaglebone", "ti,beaglebone-black";
+    /* identification */
+    part-number = "ads1015";
+    version = "A0";
+	/* ----------- ADS1015 ------------ */
+	// reserve resources for exclusive use: not needed
+	// set pinmux: not needed
+	// attach driver
+	fragment@007 {
+	    target = <&i2c2>;
+	    __overlay__ {
+			// needed to avoid gripping by DTC
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";        // probably already set
+			ads1015: ads1015@48 {
+			    compatible = "ti,ads1015";
+			    status = "okay";
+			    #address-cells = <1>;
+			    #size-cells = <0>;
+			    reg = <0x48>;
+			    channel@1 {
+					reg = <4>;
+					ti,gain = <2>;
+					ti,datarate = <2>;
+			    };
+			    channel@2 {
+					reg = <5>;
+					ti,gain = <2>;
+					ti,datarate = <2>;
+			    };
+			    channel@3 {
+					reg = <6>;
+					ti,gain = <2>;
+					ti,datarate = <2>;
+			    };
+			};
+	    };
+	};
+};
